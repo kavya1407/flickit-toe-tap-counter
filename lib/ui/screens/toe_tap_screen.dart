@@ -80,6 +80,32 @@ class _ToeTapScreenState extends State<ToeTapScreen> {
                                   letterSpacing: 1.0,
                                 ),
                               ),
+                              if (controller.isSimulatedMode) ...[
+                                const SizedBox(width: 10),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                  decoration: BoxDecoration(
+                                    color: AppConstants.accentOrange,
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  child: const Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Icon(Icons.developer_mode, size: 12, color: Colors.black),
+                                      SizedBox(width: 4),
+                                      Text(
+                                        'SIMULATION',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.w900,
+                                          letterSpacing: 0.5,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ],
                           ),
 
@@ -90,11 +116,16 @@ class _ToeTapScreenState extends State<ToeTapScreen> {
                     ),
 
                     // 3. Counter Card HUD (Overlay)
-                    const Positioned(
+                    Positioned(
                       top: 60,
                       left: 0,
                       right: 0,
-                      child: CounterDisplay(),
+                      child: Center(
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 620),
+                          child: const CounterDisplay(),
+                        ),
+                      ),
                     ),
 
                     // 4. Bottom Controls (Start, Pause, Reset, Switch Camera)
@@ -102,7 +133,12 @@ class _ToeTapScreenState extends State<ToeTapScreen> {
                       bottom: 0,
                       left: 0,
                       right: 0,
-                      child: ControlBar(previewSize: previewSize),
+                      child: Center(
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: 620),
+                          child: ControlBar(previewSize: previewSize),
+                        ),
+                      ),
                     ),
                   ],
                 ),

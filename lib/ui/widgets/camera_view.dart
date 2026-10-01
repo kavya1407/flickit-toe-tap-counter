@@ -47,36 +47,6 @@ class CameraView extends StatelessWidget {
                       showDebug: controller.debugOverlay,
                     ),
                   ),
-
-                  // Simulation Watermark indicator if running simulated
-                  if (controller.isSimulatedMode)
-                    Positioned(
-                      top: 16,
-                      left: 16,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: AppConstants.accentOrange.withOpacity(0.9),
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: const Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.developer_mode, size: 14, color: Colors.black),
-                            SizedBox(width: 4),
-                            Text(
-                              'DEMO SIMULATION ACTIVE',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 0.5,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
                 ],
               ),
             );
