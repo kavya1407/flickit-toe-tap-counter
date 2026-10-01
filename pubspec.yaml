@@ -1,0 +1,33 @@
+name: toe_tap_counter
+description: "Flickit Software Engineer Intern Assignment - Real-time Toe Tap Counter using Flutter and YOLO Pose"
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  # State Management
+  provider: ^6.1.2
+  # Camera stream & device access
+  camera: ^0.10.5+9
+  # TFLite inference engine for YOLO Pose
+  tflite_flutter: ^0.10.4
+  # Image manipulation & YUV to RGB buffer conversion
+  image: ^4.1.7
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/models/
+    - assets/models/yolov8n-pose.tflite
+    - assets/models/coco_pose_labels.txt
