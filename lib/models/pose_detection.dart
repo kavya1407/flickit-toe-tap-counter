@@ -29,8 +29,11 @@ class PoseDetection {
 
   /// Safe lookup for a specific keypoint index.
   Keypoint? getKeypoint(int index) {
-    if (index >= 0 && index < keypoints.length) {
+    if (index >= 0 && index < keypoints.length && keypoints[index].index == index) {
       return keypoints[index];
+    }
+    for (final kp in keypoints) {
+      if (kp.index == index) return kp;
     }
     return null;
   }

@@ -72,7 +72,7 @@ void main() {
       // Frame 2: Foot descends toward ball (Approaching)
       time = time.add(const Duration(milliseconds: 33));
       pose = createPose(
-        leftAnkle: const Offset(200, 420),
+        leftAnkle: const Offset(200, 390),
         rightAnkle: const Offset(350, 480),
       );
       event = detector.processFrame(pose: pose, ball: ball, timestamp: time);

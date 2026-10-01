@@ -142,8 +142,36 @@ class ToeTapDetector {
 
     switch (footState.phase) {
       case TapPhase.idle:
-        // Transition: Foot begins approaching ball
-        if (currentDistance < separationThreshold && deltaY > -2.0) {
+        if (inGeometricalContactZone) {
+          final int msSinceLast =
+              timestamp.difference(footState.lastTapTime).inMilliseconds;
+
+          if (footState.framesSinceLastTap >= minDebounceFrames &&
+              msSinceLast >= cooldownMs) {
+            _totalTaps++;
+            if (footState.side == FootSide.left) {
+              _leftTaps++;
+            } else {
+              _rightTaps++;
+            }
+
+            footState.lastTapTime = timestamp;
+            footState.framesSinceLastTap = 0;
+            footState.phase = TapPhase.contact;
+
+            event = TapEvent(
+              tapId: _totalTaps,
+              footSide: footState.side,
+              timestamp: timestamp,
+              ballCenter: ball.center,
+              contactPoint: footPos,
+              distance: currentDistance,
+            );
+            _lastTapEvent = event;
+          } else {
+            footState.phase = TapPhase.contact;
+          }
+        } else if (currentDistance < separationThreshold && deltaY > -2.0) {
           footState.phase = TapPhase.approaching;
           footState.minDistanceInPhase = currentDistance;
         }
@@ -194,8 +222,10 @@ class ToeTapDetector {
         break;
 
       case TapPhase.contact:
-        // Transition: Foot begins lifting off (retracting)
-        if (currentDistance > contactThreshold) {
+        // Transition: Foot lifts off. If already beyond separation threshold, transition directly to idle.
+        if (currentDistance >= separationThreshold) {
+          footState.phase = TapPhase.idle;
+        } else if (currentDistance > contactThreshold) {
           footState.phase = TapPhase.retracting;
         }
         break;
@@ -203,7 +233,7 @@ class ToeTapDetector {
       case TapPhase.retracting:
         // Transition: Foot has cleared the hysteresis separation boundary
         if (currentDistance >= separationThreshold) {
-          footState.phase = TapPhase.cooldown;
+          footState.phase = TapPhase.idle;
         } else if (inGeometricalContactZone && footState.framesSinceLastTap > minDebounceFrames) {
           // Quick bounce back into contact
           footState.phase = TapPhase.approaching;
@@ -211,7 +241,6 @@ class ToeTapDetector {
         break;
 
       case TapPhase.cooldown:
-        // Release cooldown back to idle once debounce requirements are satisfied
         if (footState.framesSinceLastTap >= minDebounceFrames) {
           footState.phase = TapPhase.idle;
         }
