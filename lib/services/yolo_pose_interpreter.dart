@@ -114,7 +114,7 @@ class YoloPoseInterpreter implements IPoseDetectorService {
     try {
       if (_interpreter == null) {
         // Fallback simulation when native model binary is absent (e.g. testing in simulator)
-        return _generateSimulationResult(previewSize);
+        return generateSimulationResult(previewSize);
       }
 
       final int preStart = stopwatch.elapsedMilliseconds;
