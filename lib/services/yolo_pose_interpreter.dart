@@ -234,7 +234,7 @@ class YoloPoseInterpreter implements IPoseDetectorService {
   }
 
   /// Realistic synthetic simulation generator for headless/emulator verification.
-  InferenceResult _generateSimulationResult(Size previewSize) {
+  InferenceResult generateSimulationResult(Size previewSize) {
     final double time = DateTime.now().millisecondsSinceEpoch / 1000.0;
 
     // Simulate football resting on the ground

@@ -188,34 +188,38 @@ class ToeTapController extends ChangeNotifier with WidgetsBindingObserver {
         timer.cancel();
         return;
       }
-      final nowMs = DateTime.now().millisecondsSinceEpoch;
-      _recordCameraTimestamp(nowMs);
-      _recordInferenceTimestamp(nowMs);
+      try {
+        final nowMs = DateTime.now().millisecondsSinceEpoch;
+        _recordCameraTimestamp(nowMs);
+        _recordInferenceTimestamp(nowMs);
 
-      // Run synthetic simulation frame
-      final InferenceResult result = (poseInterpreter as dynamic)._generateSimulationResult(previewSize);
-      _latestPose = result.pose;
-      _latestBall = ballTracker.update(
-        rawDetection: result.rawBall,
-        previewSize: previewSize,
-      );
+        // Run synthetic simulation frame
+        final InferenceResult result = poseInterpreter.generateSimulationResult(previewSize);
+        _latestPose = result.pose;
+        _latestBall = ballTracker.update(
+          rawDetection: result.rawBall,
+          previewSize: previewSize,
+        );
 
-      final TapEvent? tap = tapDetector.processFrame(
-        pose: _latestPose,
-        ball: _latestBall,
-        timestamp: DateTime.now(),
-      );
+        final TapEvent? tap = tapDetector.processFrame(
+          pose: _latestPose,
+          ball: _latestBall,
+          timestamp: DateTime.now(),
+        );
 
-      if (tap != null) {
-        _latestTapEvent = tap;
-        _triggerTapFeedback();
-        _statusMessage = '${tap.footLabel} TAP #${tap.tapId}!';
-      } else {
-        _updateDynamicStatus();
+        if (tap != null) {
+          _latestTapEvent = tap;
+          _triggerTapFeedback();
+          _statusMessage = '${tap.footLabel} TAP #${tap.tapId}!';
+        } else {
+          _updateDynamicStatus();
+        }
+
+        _updateTelemetryMetrics(result);
+        notifyListeners();
+      } catch (e, stack) {
+        debugPrint('Simulation loop error: $e\n$stack');
       }
-
-      _updateTelemetryMetrics(result);
-      notifyListeners();
     });
   }
 
