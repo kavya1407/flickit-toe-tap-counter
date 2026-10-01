@@ -15,7 +15,7 @@ dependencies:
   # Camera stream & device access
   camera: ^0.10.5+9
   # TFLite inference engine for YOLO Pose
-  tflite_flutter: ^0.10.4
+  tflite_flutter: ^0.12.1
   # Image manipulation & YUV to RGB buffer conversion
   image: ^4.1.7
 

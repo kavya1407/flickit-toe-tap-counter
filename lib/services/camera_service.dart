@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 
 /// Manages camera lifecycle, switching, permissions, and high-frequency frame streaming.
 class CameraService {

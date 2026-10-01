@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:math' as math;
-import 'dart:typed_data';
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +9,7 @@ import 'package:image/image.dart' as img;
 import 'package:tflite_flutter/tflite_flutter.dart';
 import '../core/constants/app_constants.dart';
 import '../models/ball_detection.dart';
+import '../models/keypoint.dart';
 import '../models/pose_detection.dart';
 import 'yolo_postprocessor.dart';
 
@@ -50,7 +50,7 @@ class YoloPoseInterpreter implements IPoseDetectorService {
   // Input & output tensor shapes
   List<int> _inputShape = [1, 640, 640, 3];
   List<int> _outputShape = [1, 56, 8400];
-  TfLiteType _inputType = TfLiteType.float32;
+  TensorType _inputType = TensorType.float32;
 
   YoloPoseInterpreter({YoloPostprocessor? postprocessor})
       : _postprocessor = postprocessor ?? YoloPostprocessor();

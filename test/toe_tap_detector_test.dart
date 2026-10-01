@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:toe_tap_counter/models/ball_detection.dart';
 import 'package:toe_tap_counter/models/keypoint.dart';
 import 'package:toe_tap_counter/models/pose_detection.dart';
-import 'package:toe_tap_counter/models/tap_event.dart';
 import 'package:toe_tap_counter/services/toe_tap_detector.dart';
 
 void main() {

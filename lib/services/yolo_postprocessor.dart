@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../core/constants/app_constants.dart';
-import '../core/utils/math_utils.dart';
 import '../models/keypoint.dart';
 import '../models/pose_detection.dart';
 import '../models/ball_detection.dart';

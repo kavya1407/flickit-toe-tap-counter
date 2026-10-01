@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../core/constants/app_constants.dart';
 import '../models/ball_detection.dart';
 import '../models/performance_metrics.dart';
 import '../models/pose_detection.dart';
