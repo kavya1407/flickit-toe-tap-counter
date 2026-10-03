@@ -38,22 +38,15 @@ jobs:
         run: flutter test
 
       - name: Build Release APK
-        run: |
-          set +e
-          flutter build apk --release -v 2>&1 | tee build_out.txt
-          BUILD_EXIT_CODE=$?
-          echo "### 📋 Build Log Summary" >> $GITHUB_STEP_SUMMARY
-          echo '```text' >> $GITHUB_STEP_SUMMARY
-          tail -n 120 build_out.txt >> $GITHUB_STEP_SUMMARY
-          echo '```' >> $GITHUB_STEP_SUMMARY
-          if [ $BUILD_EXIT_CODE -ne 0 ]; then
-            exit $BUILD_EXIT_CODE
-          fi
+        run: flutter build apk --release
 
-      - name: Upload Release APK Artifact
+      - name: Find & Upload Release APK Artifact
         uses: actions/upload-artifact@v4
         if: success()
         with:
           name: toe-tap-counter-release-apk
-          path: build/app/outputs/flutter-apk/app-release.apk
+          path: |
+            build/app/outputs/flutter-apk/*.apk
+            **/app-release.apk
+            **/*.apk
           retention-days: 14
