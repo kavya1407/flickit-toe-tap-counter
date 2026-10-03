@@ -15,21 +15,19 @@ android {
 
     defaultConfig {
         applicationId = "com.flickit.toe_tap_counter"
-        minSdk = 21
+        minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
 
-    aaptOptions {
-        noCompress("tflite")
+    androidResources {
+        noCompress.add("tflite")
     }
 
     buildTypes {
         release {
             signingConfig = signingConfigs.getByName("debug")
-            isMinifyEnabled = false
-            isShrinkResources = false
         }
     }
 }
