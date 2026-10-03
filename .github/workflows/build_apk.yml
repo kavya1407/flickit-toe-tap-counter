@@ -38,15 +38,14 @@ jobs:
         run: flutter test
 
       - name: Build Release APK
-        run: flutter build apk --release
+        run: |
+          flutter build apk --release
+          echo "=== SEARCHING FOR COMPILED APKS ==="
+          find /home/runner/work -name "*.apk" || true
 
-      - name: Find & Upload Release APK Artifact
+      - name: Upload Release APK Artifact
         uses: actions/upload-artifact@v4
-        if: success()
         with:
           name: toe-tap-counter-release-apk
-          path: |
-            build/app/outputs/flutter-apk/*.apk
-            **/app-release.apk
-            **/*.apk
+          path: "**/*.apk"
           retention-days: 14
