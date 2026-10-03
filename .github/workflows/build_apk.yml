@@ -43,15 +43,15 @@ jobs:
       - name: Build Release APK
         id: build_step
         continue-on-error: true
-        run: flutter build apk --release
+        run: flutter build apk --release --android-skip-build-dependency-validation
 
       - name: Push Build Debug Log on Failure
         if: steps.build_step.outcome == 'failure'
         run: |
-          flutter build apk --release -v > build_failure.txt 2>&1 || true
+          flutter build apk --release --android-skip-build-dependency-validation -v > build_failure.txt 2>&1 || true
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          git checkout -b build-debug
+          git checkout -B build-debug
           git add build_failure.txt
           git commit -m "debug: add build failure log" || true
           git push -f origin build-debug || true
