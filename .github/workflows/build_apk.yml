@@ -7,6 +7,9 @@ on:
     branches: [ main, master ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     name: Test & Build Release APK
@@ -38,13 +41,25 @@ jobs:
         run: flutter test
 
       - name: Build Release APK
+        id: build_step
+        continue-on-error: true
+        run: flutter build apk --release
+
+      - name: Push Build Debug Log on Failure
+        if: steps.build_step.outcome == 'failure'
         run: |
-          flutter build apk --release
-          echo "=== SEARCHING FOR COMPILED APKS ==="
-          find /home/runner/work -name "*.apk" || true
+          flutter build apk --release -v > build_failure.txt 2>&1 || true
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git checkout -b build-debug
+          git add build_failure.txt
+          git commit -m "debug: add build failure log" || true
+          git push -f origin build-debug || true
+          exit 1
 
       - name: Upload Release APK Artifact
         uses: actions/upload-artifact@v4
+        if: steps.build_step.outcome == 'success'
         with:
           name: toe-tap-counter-release-apk
           path: "**/*.apk"
