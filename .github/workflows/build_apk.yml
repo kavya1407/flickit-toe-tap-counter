@@ -25,7 +25,6 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.47.x'
           channel: 'stable'
           cache: true
 
@@ -39,7 +38,17 @@ jobs:
         run: flutter test
 
       - name: Build Release APK
-        run: flutter build apk --release
+        run: |
+          set +e
+          flutter build apk --release -v 2>&1 | tee build_out.txt
+          BUILD_EXIT_CODE=$?
+          echo "### 📋 Build Log Summary" >> $GITHUB_STEP_SUMMARY
+          echo '```text' >> $GITHUB_STEP_SUMMARY
+          tail -n 120 build_out.txt >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+          if [ $BUILD_EXIT_CODE -ne 0 ]; then
+            exit $BUILD_EXIT_CODE
+          fi
 
       - name: Upload Release APK Artifact
         uses: actions/upload-artifact@v4
